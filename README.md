@@ -18,8 +18,8 @@ The project focuses on:
 
 The dataset used in this project is **"Sample Dataset"**, which contains customer-related information used to analyze churn behavior and build predictive models.
 
-**Dataset Name:** Sample Dataset  
-**Dataset Source:** [Placeholder Dataset Link](placeholder3)
+**Dataset Name:** IBM Telco Customer Churn
+**Dataset Source:** [https://www.kaggle.com/datasets/blastchar/telco-customer-churn/data](Dataset link)
 
 ---
 
@@ -59,17 +59,6 @@ This visualization helps users quickly understand the overall churn distribution
 **5. Important Features Influencing Churn Risk (Feature List)**  
 Displays the most significant features contributing to churn predictions based on the trained machine learning model.  
 This helps users understand the key factors driving customer churn.
-
-## Dashboard Purpose
-
-The dashboard serves as a monitoring and decision-support tool designed to:
-
-- Identify customers at risk of churn
-- Monitor customer churn distribution
-- Highlight key factors influencing churn
-- Support proactive customer retention strategies
-- Provide visual insights for business decision-making
-
 ---
 
 # Key Insights Summary
