@@ -32,7 +32,7 @@ export default function Sidebar({
       )}
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-full w-[260px] border-r transition-transform duration-300 lg:hidden ${
+        className={`fixed left-0 top-0 z-50 h-full w-65 border-r transition-transform duration-300 lg:hidden ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         } ${
           darkMode ? "border-zinc-800 bg-black" : "border-slate-200 bg-white"
@@ -92,7 +92,7 @@ export default function Sidebar({
 
       <aside className="hidden lg:block">
         <div
-          className={`group h-full w-[88px] overflow-hidden border-r transition-all duration-300 hover:w-[220px] ${
+          className={`group h-full w-22 overflow-hidden border-r transition-all duration-300 hover:w-55 ${
             darkMode ? "border-zinc-800 bg-black" : "border-slate-200 bg-white"
           }`}
         >

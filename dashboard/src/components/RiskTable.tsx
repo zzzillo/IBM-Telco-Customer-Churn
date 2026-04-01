@@ -14,7 +14,7 @@ export default function RiskTable({ title, data, darkMode }: RiskTableProps) {
         darkMode={darkMode}
       />
 
-      <div className="max-h-[320px] overflow-y-auto pr-2">
+      <div className="max-h-80 overflow-y-auto pr-2">
         <table className="min-w-full border-separate border-spacing-y-3">
           <thead className={`sticky top-0 z-10 ${darkMode ? "bg-black" : "bg-white"}`}>
             <tr>

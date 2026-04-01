@@ -65,9 +65,9 @@ export default function ChurnPieCard({
         darkMode={darkMode}
       />
 
-      <div className="flex h-[320px] flex-col items-center justify-center gap-4">
+      <div className="flex h-80 flex-col items-center justify-center gap-4">
         <div
-          className="h-[220px] w-full outline-none focus:outline-none"
+          className="h-55 w-full outline-none focus:outline-none"
           tabIndex={-1}
           onFocus={(e) => e.currentTarget.blur()}
           onMouseDown={(e) => {
