@@ -49,7 +49,7 @@ export default function TopBar({
           onClick={onToggleDarkMode}
           aria-label="Toggle dark mode"
           aria-pressed={darkMode}
-          className={`relative inline-flex h-8 w-[72px] shrink-0 items-center rounded-full px-1 transition sm:w-[90px] ${
+          className={`relative inline-flex h-8 w-18 shrink-0 items-center rounded-full px-1 transition sm:w-22.5 ${
             darkMode ? "bg-zinc-700" : "bg-slate-300"
           }`}
         >
@@ -65,7 +65,7 @@ export default function TopBar({
 
           <span
             className={`relative z-10 inline-block h-6 w-6 rounded-full bg-white shadow transition ${
-              darkMode ? "translate-x-10 sm:translate-x-[52px]" : "translate-x-0"
+              darkMode ? "translate-x-10 sm:translate-x-13" : "translate-x-0"
             }`}
           />
         </button>

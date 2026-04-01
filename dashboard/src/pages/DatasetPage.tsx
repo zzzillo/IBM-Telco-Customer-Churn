@@ -73,8 +73,8 @@ export default function DatasetPage({ rows, darkMode }: DatasetPageProps) {
         </div>
 
         <div className="overflow-x-auto">
-          <div className="max-h-[520px] overflow-y-auto pr-2">
-            <table className="min-w-[1700px] border-separate border-spacing-y-3">
+          <div className="max-h-130 overflow-y-auto pr-2">
+            <table className="min-w-425 border-separate border-spacing-y-3">
               <thead
                 className={`sticky top-0 z-10 ${
                   darkMode ? "bg-black" : "bg-white"
