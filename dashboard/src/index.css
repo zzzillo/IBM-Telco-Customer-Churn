@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+.recharts-wrapper,
+.recharts-wrapper:focus,
+.recharts-wrapper *:focus,
+.recharts-surface,
+.recharts-surface:focus,
+.recharts-sector,
+.recharts-sector:focus,
+.recharts-pie-sector,
+.recharts-pie-sector:focus,
+.recharts-responsive-container,
+.recharts-responsive-container:focus,
+svg,
+svg:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.recharts-wrapper,
+.recharts-surface,
+.recharts-responsive-container {
+  -webkit-tap-highlight-color: transparent;
+}

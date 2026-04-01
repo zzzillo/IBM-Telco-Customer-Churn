@@ -1,5 +1,4 @@
-import { useMemo, useState, } from "react";
-import Papa from "papaparse";
+import { useMemo, useState, useEffect } from "react";
 import {
   ResponsiveContainer,
   PieChart,
@@ -218,7 +217,7 @@ function TopBar({
           {/* CIRCLE */}
           <span
             className={`relative z-10 inline-block h-6 w-6 transform rounded-full bg-white shadow transition ${
-              darkMode ? "translate-x-[52px]" : "translate-x-0"
+              darkMode ? "translate-x-10 lg:translate-x-13" : "translate-x-0"
             }`}
           />
         </button>
@@ -426,7 +425,18 @@ function StatCard({ label, value, subtext, darkMode }: StatCardProps) {
   );
 }
 
-function StatsSection({ darkMode }: { darkMode: boolean }) {
+function StatsSection({
+  darkMode,
+  totalCustomers,
+  atRiskCount,
+}: {
+  darkMode: boolean;
+  totalCustomers: number;
+  atRiskCount: number;
+}) {
+  const atRiskPercent =
+    totalCustomers > 0 ? ((atRiskCount / totalCustomers) * 100).toFixed(1) : "0.0";
+
   return (
     <section
       className={`h-full rounded-3xl border p-5 shadow-sm ${
@@ -438,14 +448,14 @@ function StatsSection({ darkMode }: { darkMode: boolean }) {
       <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
         <StatCard
           label="Current Customers"
-          value="7,043"
+          value={totalCustomers.toLocaleString()}
           subtext="Total customers currently recorded in the dataset."
           darkMode={darkMode}
         />
         <StatCard
           label="Customers at Risk"
-          value="1,869"
-          subtext="Customers predicted to be at risk of churn."
+          value={atRiskCount.toLocaleString()}
+          subtext={`${atRiskPercent}% of all customers are marked as at risk.`}
           darkMode={darkMode}
         />
       </div>
@@ -632,6 +642,44 @@ function FeatureTable({ title, data, darkMode }: FeatureTableProps) {
 const PIE_COLORS = ["#ef4444", "#22c55e"];
 
 function ChurnPieCard({ title, data, darkMode }: PieCardProps) {
+  const total = data.reduce((sum, item) => sum + item.value, 0);
+
+  const pieData = data.map((item) => ({
+    ...item,
+    percentage: total > 0 ? (item.value / total) * 100 : 0,
+  }));
+
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean;
+    payload?: Array<{
+      payload: {
+        name: string;
+        value: number;
+        percentage: number;
+      };
+    }>;
+  }) => {
+    if (!active || !payload || !payload.length) return null;
+
+    const item = payload[0].payload;
+
+    return (
+      <div
+        className={`rounded-xl border px-3 py-2 text-sm shadow-md ${
+          darkMode
+            ? "border-zinc-800 bg-zinc-900 text-zinc-100"
+            : "border-slate-200 bg-white text-slate-900"
+        }`}
+      >
+        <p className="font-medium">{item.name}</p>
+        <p>{item.percentage.toFixed(1)}%</p>
+      </div>
+    );
+  };
+
   return (
     <section
       className={`rounded-3xl border p-5 shadow-sm ${
@@ -647,31 +695,48 @@ function ChurnPieCard({ title, data, darkMode }: PieCardProps) {
       />
 
       <div className="flex h-[320px] flex-col items-center justify-center gap-4">
-        <div className="h-[220px] w-full">
+        <div
+          className="h-[220px] w-full outline-none focus:outline-none"
+          tabIndex={-1}
+          onFocus={(e) => e.currentTarget.blur()}
+          onMouseDown={(e) => {
+            const target = e.target as HTMLElement;
+            if (typeof target.blur === "function") target.blur();
+          }}
+        >
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
+            <PieChart
+              margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+            >
               <Pie
-                data={data}
+                data={pieData}
                 dataKey="value"
                 nameKey="name"
                 innerRadius={65}
                 outerRadius={95}
                 paddingAngle={3}
+                stroke="none"
+                isAnimationActive={false}
+                rootTabIndex={-1}
               >
-                {data.map((_, index) => (
+                {pieData.map((_, index) => (
                   <Cell
                     key={index}
                     fill={PIE_COLORS[index % PIE_COLORS.length]}
+                    stroke="none"
                   />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={false}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          {data.map((item, index) => (
+          {pieData.map((item, index) => (
             <div
               key={item.name}
               className={`flex items-center gap-2 rounded-full px-3 py-2 ${
@@ -689,7 +754,7 @@ function ChurnPieCard({ title, data, darkMode }: PieCardProps) {
                   darkMode ? "text-zinc-300" : "text-slate-700"
                 }`}
               >
-                {item.name}: {item.value}%
+                {item.name}: {item.percentage.toFixed(1)}%
               </span>
             </div>
           ))}
@@ -700,11 +765,15 @@ function ChurnPieCard({ title, data, darkMode }: PieCardProps) {
 }
 
 function DashboardPage({
+  totalCustomers,
+  atRiskCount,
   atRiskCustomers,
   importantFeatures,
   churnDistribution,
   darkMode,
 }: {
+  totalCustomers: number;
+  atRiskCount: number;
   atRiskCustomers: RiskCustomer[];
   importantFeatures: FeatureItem[];
   churnDistribution: { name: string; value: number }[];
@@ -713,7 +782,11 @@ function DashboardPage({
   return (
     <div className="p-6 sm:p-8">
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <StatsSection darkMode={darkMode} />
+        <StatsSection
+          darkMode={darkMode}
+          totalCustomers={totalCustomers}
+          atRiskCount={atRiskCount}
+        />
         <RiskTable
           title="List of Customers at Risk"
           data={atRiskCustomers}
@@ -781,14 +854,14 @@ function DatasetPage({
                 darkMode ? "text-zinc-100" : "text-slate-900"
               }`}
             >
-              Dataset Table
+              Customer Overview
             </h3>
             <p
               className={`mt-1 text-sm ${
                 darkMode ? "text-zinc-400" : "text-slate-500"
               }`}
             >
-              Scroll horizontally for all columns and vertically for more rows.
+              List of customers being tracked for churn monitoring.
             </p>
           </div>
 
@@ -1263,17 +1336,73 @@ export default function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
-  const atRiskCustomers: RiskCustomer[] = [
-    { customerId: "CUST-1001", churnProbability: "91%", churnStatus: "At Risk" },
-    { customerId: "CUST-1048", churnProbability: "87%", churnStatus: "At Risk" },
-    { customerId: "CUST-1120", churnProbability: "84%", churnStatus: "At Risk" },
-    { customerId: "CUST-1189", churnProbability: "82%", churnStatus: "At Risk" },
-    { customerId: "CUST-1266", churnProbability: "80%", churnStatus: "At Risk" },
-    { customerId: "CUST-1319", churnProbability: "79%", churnStatus: "At Risk" },
-    { customerId: "CUST-1384", churnProbability: "77%", churnStatus: "At Risk" },
-  ];
+  const [datasetRows, setDatasetRows] = useState<DatasetRow[]>([]);
 
-  const importantFeatures: FeatureItem[] = [
+  useEffect(() => {
+    fetch("/data.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setDatasetRows(data);
+      })
+      .catch((err) => {
+        console.error("Error loading JSON:", err);
+      });
+  }, []);
+
+  const normalizedRows = useMemo(() => {
+    return datasetRows.map((row) => {
+      const churn = String(row.Churn).toLowerCase();
+      const isAtRisk =
+        churn === "yes" ||
+        churn === "at risk" ||
+        churn === "high risk";
+
+      return {
+        ...row,
+        Churn: isAtRisk ? "At Risk" : "Not at Risk",
+      };
+    });
+  }, [datasetRows]);
+
+  const totalCustomers = normalizedRows.length;
+
+  const atRiskRows = useMemo(() => {
+    return normalizedRows.filter((r) => r.Churn === "At Risk");
+  }, [normalizedRows]);
+
+  const atRiskCount = atRiskRows.length;
+
+  const atRiskCustomers = useMemo(() => {
+    return atRiskRows.slice(0, 50).map((row) => ({
+      customerId: row.customerID,
+      churnProbability: `${Math.round(
+        Number(row.ChurnProbability) * 100
+      )}%`,
+      churnStatus: row.Churn,
+    }));
+  }, [atRiskRows]);
+
+  const churnDistribution = useMemo(() => {
+    if (totalCustomers === 0) {
+      return [
+        { name: "Customers at Risk", value: 0 },
+        { name: "Customers Not at Risk", value: 0 },
+      ];
+    }
+
+    return [
+      {
+        name: "Customers at Risk",
+        value: Math.round((atRiskCount / totalCustomers) * 100),
+      },
+      {
+        name: "Customers Not at Risk",
+        value: Math.round(((totalCustomers - atRiskCount) / totalCustomers) * 100),
+      },
+    ];
+  }, [atRiskCount, totalCustomers]);
+
+  const importantFeatures = [
     { feature: "Contract Type", importance: "0.31", impact: "High" },
     { feature: "Monthly Charges", importance: "0.24", impact: "High" },
     { feature: "Tenure", importance: "0.19", impact: "High" },
@@ -1282,113 +1411,6 @@ export default function App() {
     { feature: "Online Security", importance: "0.10", impact: "Medium" },
     { feature: "Tech Support", importance: "0.09", impact: "Medium" },
   ];
-
-  const churnDistribution = [
-    { name: "Customers at Risk", value: 27 },
-    { name: "Customers Not at Risk", value: 73 },
-  ];
-
-  const datasetRows = useMemo<DatasetRow[]>(
-    () => [
-      {
-        customerID: "7590-VHVEG",
-        gender: "Female",
-        SeniorCitizen: 0,
-        Partner: "Yes",
-        Dependents: "No",
-        tenure: 1,
-        PhoneService: "No",
-        MultipleLines: "No phone service",
-        InternetService: "DSL",
-        OnlineSecurity: "No",
-        OnlineBackup: "Yes",
-        DeviceProtection: "No",
-        TechSupport: "No",
-        StreamingTV: "No",
-        StreamingMovies: "No",
-        Contract: "Month-to-month",
-        PaperlessBilling: "Yes",
-        PaymentMethod: "Electronic check",
-        MonthlyCharges: 29.85,
-        TotalCharges: 29.85,
-        ChurnProbability: 0.91,
-        Churn: "At Risk",
-      },
-      {
-        customerID: "3668-QPYBK",
-        gender: "Male",
-        SeniorCitizen: 0,
-        Partner: "No",
-        Dependents: "No",
-        tenure: 2,
-        PhoneService: "Yes",
-        MultipleLines: "No",
-        InternetService: "DSL",
-        OnlineSecurity: "Yes",
-        OnlineBackup: "Yes",
-        DeviceProtection: "No",
-        TechSupport: "No",
-        StreamingTV: "No",
-        StreamingMovies: "No",
-        Contract: "Month-to-month",
-        PaperlessBilling: "Yes",
-        PaymentMethod: "Mailed check",
-        MonthlyCharges: 53.85,
-        TotalCharges: 108.15,
-        ChurnProbability: 0.91,
-        Churn: "Not at Risk",
-      },
-      {
-        customerID: "9237-HQITU",
-        gender: "Female",
-        SeniorCitizen: 0,
-        Partner: "No",
-        Dependents: "No",
-        tenure: 2,
-        PhoneService: "Yes",
-        MultipleLines: "No",
-        InternetService: "Fiber optic",
-        OnlineSecurity: "No",
-        OnlineBackup: "No",
-        DeviceProtection: "No",
-        TechSupport: "No",
-        StreamingTV: "No",
-        StreamingMovies: "No",
-        Contract: "Month-to-month",
-        PaperlessBilling: "Yes",
-        PaymentMethod: "Electronic check",
-        MonthlyCharges: 70.7,
-        TotalCharges: 151.65,
-        ChurnProbability: 0.91,
-        Churn: "At Risk",
-      },
-      {
-        customerID: "7892-POOKP",
-        gender: "Female",
-        SeniorCitizen: 0,
-        Partner: "Yes",
-        Dependents: "Yes",
-        tenure: 28,
-        PhoneService: "Yes",
-        MultipleLines: "Yes",
-        InternetService: "Fiber optic",
-        OnlineSecurity: "Yes",
-        OnlineBackup: "No",
-        DeviceProtection: "Yes",
-        TechSupport: "Yes",
-        StreamingTV: "Yes",
-        StreamingMovies: "Yes",
-        Contract: "One year",
-        PaperlessBilling: "Yes",
-        PaymentMethod: "Credit card (automatic)",
-        MonthlyCharges: 104.8,
-        TotalCharges: 3046.05,
-        ChurnProbability: 0.91,
-        Churn: "Not at Risk",
-      },
-    ],
-    []
-  );
 
   return (
     <main className={darkMode ? "min-h-screen bg-black" : "min-h-screen bg-slate-100"}>
@@ -1411,6 +1433,8 @@ export default function App() {
 
           {activePage === "dashboard" && (
             <DashboardPage
+              totalCustomers={totalCustomers}
+              atRiskCount={atRiskCount}
               atRiskCustomers={atRiskCustomers}
               importantFeatures={importantFeatures}
               churnDistribution={churnDistribution}
@@ -1419,7 +1443,7 @@ export default function App() {
           )}
 
           {activePage === "dataset" && (
-            <DatasetPage rows={datasetRows} darkMode={darkMode} />
+            <DatasetPage rows={normalizedRows} darkMode={darkMode} />
           )}
 
           {activePage === "about" && <AboutPage darkMode={darkMode} />}
