@@ -1,0 +1,52 @@
+[
+    {
+        "feature": "Fiber Optic Internet Users",
+        "importance": 0.348497,
+        "impact": "High"
+    },
+    {
+        "feature": "Two-Year Contract Customers",
+        "importance": 0.164597,
+        "impact": "High"
+    },
+    {
+        "feature": "One-Year Contract Customers",
+        "importance": 0.153975,
+        "impact": "High"
+    },
+    {
+        "feature": "Customers Without Internet Service",
+        "importance": 0.057524,
+        "impact": "Medium"
+    },
+    {
+        "feature": "Customer Tenure (Length of Stay)",
+        "importance": 0.041290,
+        "impact": "Medium"
+    },
+    {
+        "feature": "Customers with Streaming Movies",
+        "importance": 0.024517,
+        "impact": "Low"
+    },
+    {
+        "feature": "Electronic Check Payment Users",
+        "importance": 0.019632,
+        "impact": "Low"
+    },
+    {
+        "feature": "Customers with Multiple Phone Lines",
+        "importance": 0.017173,
+        "impact": "Low"
+    },
+    {
+        "feature": "Customers with Online Security Service",
+        "importance": 0.014403,
+        "impact": "Low"
+    },
+    {
+        "feature": "Customers with Phone Service",
+        "importance": 0.014304,
+        "impact": "Low"
+    }
+]

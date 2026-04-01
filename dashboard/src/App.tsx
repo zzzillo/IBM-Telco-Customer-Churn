@@ -12,6 +12,7 @@ export default function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [datasetRows, setDatasetRows] = useState<DatasetRow[]>([]);
+  const [importantFeatures, setImportantFeatures] = useState<FeatureItem[]>([]);
 
   useEffect(() => {
     fetch("/data.json")
@@ -21,6 +22,14 @@ export default function App() {
       })
       .catch((err) => {
         console.error("Error loading JSON:", err);
+      });
+    fetch("/features.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setImportantFeatures(data);
+      })
+      .catch((err) => {
+        console.error("Error loading features:", err);
       });
   }, []);
 
@@ -76,16 +85,6 @@ export default function App() {
       },
     ];
   }, [atRiskCount, totalCustomers]);
-
-  const importantFeatures: FeatureItem[] = [
-    { feature: "Contract Type", importance: "0.31", impact: "High" },
-    { feature: "Monthly Charges", importance: "0.24", impact: "High" },
-    { feature: "Tenure", importance: "0.19", impact: "High" },
-    { feature: "Internet Service", importance: "0.14", impact: "Medium" },
-    { feature: "Payment Method", importance: "0.12", impact: "Medium" },
-    { feature: "Online Security", importance: "0.10", impact: "Medium" },
-    { feature: "Tech Support", importance: "0.09", impact: "Medium" },
-  ];
 
   return (
     <main className={darkMode ? "min-h-screen bg-black" : "min-h-screen bg-slate-100"}>
