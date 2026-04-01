@@ -59,9 +59,10 @@ This visualization helps users quickly understand the overall churn distribution
 **5. Important Features Influencing Churn Risk (Feature List)**  
 Displays the most significant features contributing to churn predictions based on the trained machine learning model.  
 This helps users understand the key factors driving customer churn.
+
 ---
 
-# Key Insights Summary
+# Insights Summary
 
 Based on feature importance analysis, the following key findings were identified:
 

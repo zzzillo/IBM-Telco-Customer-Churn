@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import Sidebar from "./components/SideBar";
 import TopBar from "./components/TopBar";
-import DashboardPage from "./pages/DashboardPage";
-import DatasetPage from "./pages/DatasetPage";
-import AboutPage from "./pages/AboutPage";
 import type { DatasetRow, FeatureItem, Page, RiskCustomer } from "./types";
+
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const DatasetPage = lazy(() => import("./pages/DatasetPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 
 export default function App() {
   const [activePage, setActivePage] = useState<Page>("dashboard");
@@ -69,7 +70,9 @@ export default function App() {
       },
       {
         name: "Customers Not at Risk",
-        value: Math.round(((totalCustomers - atRiskCount) / totalCustomers) * 100),
+        value: Math.round(
+          ((totalCustomers - atRiskCount) / totalCustomers) * 100
+        ),
       },
     ];
   }, [atRiskCount, totalCustomers]);
@@ -102,22 +105,36 @@ export default function App() {
             onToggleDarkMode={() => setDarkMode((prev) => !prev)}
           />
 
-          {activePage === "dashboard" && (
-            <DashboardPage
-              totalCustomers={totalCustomers}
-              atRiskCount={atRiskCount}
-              atRiskCustomers={atRiskCustomers}
-              importantFeatures={importantFeatures}
-              churnDistribution={churnDistribution}
-              darkMode={darkMode}
-            />
-          )}
+          <Suspense
+            fallback={
+              <div
+                className={
+                  darkMode
+                    ? "p-6 text-white"
+                    : "p-6 text-slate-900"
+                }
+              >
+                Loading...
+              </div>
+            }
+          >
+            {activePage === "dashboard" && (
+              <DashboardPage
+                totalCustomers={totalCustomers}
+                atRiskCount={atRiskCount}
+                atRiskCustomers={atRiskCustomers}
+                importantFeatures={importantFeatures}
+                churnDistribution={churnDistribution}
+                darkMode={darkMode}
+              />
+            )}
 
-          {activePage === "dataset" && (
-            <DatasetPage rows={normalizedRows} darkMode={darkMode} />
-          )}
+            {activePage === "dataset" && (
+              <DatasetPage rows={normalizedRows} darkMode={darkMode} />
+            )}
 
-          {activePage === "about" && <AboutPage darkMode={darkMode} />}
+            {activePage === "about" && <AboutPage darkMode={darkMode} />}
+          </Suspense>
         </div>
       </div>
     </main>
