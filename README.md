@@ -16,8 +16,6 @@ The project focuses on:
 
 ## Dataset Information
 
-The dataset used in this project is **"Sample Dataset"**, which contains customer-related information used to analyze churn behavior and build predictive models.
-
 **Dataset Name:** IBM Telco Customer Churn
 **Dataset Source:** [https://www.kaggle.com/datasets/blastchar/telco-customer-churn/data](Dataset link)
 
@@ -34,7 +32,7 @@ The dashboard can be accessed by following these instructions:
 ![Dashboard Preview](dashboard.png)
 
 🔗 **Access the dashboard here:**  
-https://sampledashboard.com
+https://ibm-telco-customer-churn.vercel.app/
 
 The dashboard presents summarized customer churn information and highlights customers who are at risk of leaving the service.
 
