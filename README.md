@@ -9,6 +9,7 @@ This project builds a **customer churn monitoring system** using machine learnin
 Two datasets are used:
 
 1. **Training Dataset** – IBM Telco Customer Churn (Kaggle)  
+   Link: https://www.kaggle.com/datasets/blastchar/telco-customer-churn  
    Used to train and evaluate the churn prediction model.
 
 2. **Monitoring Dataset (Synthetic)**  
@@ -89,10 +90,11 @@ Develop a churn monitoring dashboard that:
 
 ## Tech Stack
 
-- **Python** – Data cleaning, preprocessing, and analysis
-- **XGBoost** – Machine learning model for churn prediction
-- **React + TypeScript** – Interactive dashboard development
-- **Vercel** – Deployment and hosting
+- **Python** – Data cleaning, preprocessing, and analysis  
+- **XGBoost** – Machine learning model for churn prediction  
+- **React + TypeScript** – Interactive dashboard development  
+- **Vercel** – Deployment and hosting  
+
 ---
 
 ## Output
