@@ -1,73 +1,105 @@
-# IBM Customer Churn Analysis  
+# IBM Customer Churn Monitoring Dashboard
 
 ---
 
-# Project Overview
+## Overview
 
-Customer churn prediction is an essential task for businesses aiming to retain customers and reduce revenue loss. This project analyzes the IBM Telco Customer Churn dataset to identify patterns that contribute to customer churn and build predictive machine learning models to forecast customer behavior.
+This project builds a **customer churn monitoring system** using machine learning and an interactive dashboard.
 
-The project focuses on:
+Two datasets are used:
 
-- Understanding customer characteristics and patterns.
-- Identifying key factors that contribute to customer churn.
-- Building predictive machine learning models to forecast customer churn.
-- Extracting actionable business insights to support customer retention strategies.
-- Developing an interactive dashboard to assist in predicting churn risk for future customers.
+1. **Training Dataset** – IBM Telco Customer Churn (Kaggle)  
+   Used to train and evaluate the churn prediction model.
 
-## Dataset Information
-
-**Dataset Name:** IBM Telco Customer Churn
-**Dataset Source:** [https://www.kaggle.com/datasets/blastchar/telco-customer-churn/data](Dataset link)
+2. **Monitoring Dataset (Synthetic)**  
+   Generated using an LLM to simulate new customers.  
+   Used for real-time churn prediction and dashboard monitoring.
 
 ---
 
-# Dashboard
+## Task
 
-An interactive dashboard was developed to visualize customer churn risk and support data-driven decision-making. A synthetic dataset was generated to evaluate churn predictions on a separate set of data.
+Develop a churn monitoring dashboard that:
 
-The dashboard can be accessed by following these instructions:
+- Predicts customer churn using a trained ML model  
+- Applies the model to new (synthetic) customer data  
+- Tracks churn risk using clear KPIs  
+- Supports data-driven retention decisions  
 
-## Dashboard Overview
+---
+
+## What I Did
+
+- Performed **exploratory data analysis (EDA)** to understand customer behavior and churn patterns  
+- Cleaned and transformed data for modeling (encoding, feature preparation)  
+- Built an **XGBoost classification model** to predict customer churn  
+- Evaluated model outputs and extracted **key drivers using feature importance**  
+- Defined **business-relevant KPIs** for churn monitoring  
+- Generated a **synthetic dataset** to simulate new customer data  
+- Applied the trained model to simulate real-world churn prediction  
+- Developed a **dashboard to monitor churn risk and support decision-making**
+
+---
+
+## Key KPIs
+
+- **Total Customers**  
+  Number of customers in the monitoring dataset  
+
+- **Customers at Risk**  
+  Customers predicted as churn = "At Risk"  
+
+- **Churn Rate (%)**  
+  (At Risk Customers / Total Customers) × 100  
+
+- **Top Risk Drivers**  
+  Most important features influencing churn  
+
+- **High-Risk Customer List**  
+  Customers requiring immediate attention  
+
+---
+
+## Dashboard
 
 ![Dashboard Preview](dashboard.png)
 
-🔗 **Access the dashboard here:**  
-https://ibm-telco-customer-churn.vercel.app/
+🔗 https://ibm-telco-customer-churn.vercel.app/
 
-The dashboard presents summarized customer churn information and highlights customers who are at risk of leaving the service.
+### Features
 
-### Key Dashboard Components
-
-**1. Current Customers (Number)**  
-Displays the total number of customers currently recorded in the dataset.  
-This provides an overview of the total customer population being monitored.
-
-**2. Customers at Risk (Number)**  
-Shows the number of customers predicted to be at risk of churn.  
-This helps businesses quickly identify how many customers require attention.
-
-**3. List of Customers at Risk (Table/List)**  
-Provides a detailed list of customers predicted to be at risk of churn.  
-This allows decision-makers to review specific customers and plan targeted retention strategies.
-
-**4. Percentage of Customers at Risk vs. Not at Risk (Pie Chart)**  
-Displays a visual comparison between customers at risk and those not at risk using a pie chart.  
-This visualization helps users quickly understand the overall churn distribution.
-
-**5. Important Features Influencing Churn Risk (Feature List)**  
-Displays the most significant features contributing to churn predictions based on the trained machine learning model.  
-This helps users understand the key factors driving customer churn.
+- Real-time churn prediction  
+- KPI monitoring  
+- Customer-level risk visibility  
+- Feature importance insights  
 
 ---
 
-# Insights Summary
+## Key Insights
 
-Based on feature importance analysis, the following key findings were identified:
+- Fiber optic internet users show higher churn risk  
+- Month-to-month contracts drive higher churn  
+- Customers with low tenure are more likely to leave  
+- Electronic check payments correlate with churn  
+- Lack of add-on services reduces retention  
 
-1. **Internet service type**, particularly fiber optic, is the strongest predictor of customer churn, indicating that service quality or pricing may significantly impact customer decisions.  
-2. **Contract duration** plays a critical role in customer retention, with short-term (month-to-month) contracts showing higher churn rates compared to long-term agreements.  
-3. Customers with **longer tenure** demonstrate greater loyalty and are less likely to churn, suggesting that retention improves over time.  
-4. **Payment methods** influence churn behavior, with certain methods (e.g., electronic check) associated with higher churn risk.  
-5. **Additional services**, such as streaming and online security, contribute to customer engagement and can impact the likelihood of churn.  
+**Main drivers:** contract type, service type, customer engagement  
 
-Overall, these findings highlight that **service type, contract duration, and customer engagement** are key drivers of churn behavior, providing valuable insights for developing targeted retention strategies.
+---
+
+## Tech Stack
+
+- **Python** – Data cleaning, preprocessing, and analysis
+- **XGBoost** – Machine learning model for churn prediction
+- **React + TypeScript** – Interactive dashboard development
+- **Vercel** – Deployment and hosting
+---
+
+## Output
+
+- Trained churn prediction model  
+- Synthetic monitoring dataset  
+- Deployed dashboard  
+- Actionable business insights  
+
+---
