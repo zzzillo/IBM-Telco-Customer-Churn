@@ -10,13 +10,14 @@ export default function AboutPage({ darkMode }: AboutPageProps) {
           darkMode ? "border-zinc-800 bg-black" : "border-slate-200 bg-white"
         }`}
       >
+        {/* TITLE + DESCRIPTION */}
         <div>
           <h2
             className={`mt-2 text-3xl font-bold tracking-tight ${
               darkMode ? "text-zinc-100" : "text-slate-900"
             }`}
           >
-            IBM Customer Churn Analysis
+            IBM Customer Churn Monitoring Dashboard
           </h2>
 
           <p
@@ -24,191 +25,122 @@ export default function AboutPage({ darkMode }: AboutPageProps) {
               darkMode ? "text-zinc-300" : "text-slate-600"
             }`}
           >
-            This project focuses on predicting customer churn using machine
-            learning. By analyzing customer behavior and service patterns, the
-            system identifies customers who are likely to leave, allowing
-            businesses to take proactive actions to improve retention and reduce
-            revenue loss.
+            This project demonstrates an end-to-end data analytics workflow,
+            from data preparation and modeling to deployment in a monitoring system.
+            It simulates a real-world business scenario where a trained churn prediction
+            model is continuously applied to new customer data to identify churn risk
+            and support proactive retention strategies.
           </p>
         </div>
 
+        {/* DIVIDER */}
         <div className={`my-10 border-t ${darkMode ? "border-zinc-800" : "border-slate-200"}`} />
 
+        {/* DASHBOARD OVERVIEW */}
         <div>
-          <h3
-            className={`text-lg font-semibold ${
-              darkMode ? "text-zinc-100" : "text-slate-900"
-            }`}
-          >
-            Project Overview
+          <h3 className={`text-lg font-semibold ${darkMode ? "text-zinc-100" : "text-slate-900"}`}>
+            Dashboard Overview
           </h3>
 
-          <ul
-            className={`mt-4 space-y-2 text-sm ${
-              darkMode ? "text-zinc-300" : "text-slate-600"
-            }`}
-          >
-            <li>• Analyze customer characteristics and usage patterns</li>
-            <li>• Identify key factors contributing to churn behavior</li>
-            <li>• Build predictive machine learning models</li>
-            <li>• Extract actionable business insights</li>
-            <li>• Support decision-making through an interactive dashboard</li>
-          </ul>
-        </div>
-
-        <div className={`my-10 border-t ${darkMode ? "border-zinc-800" : "border-slate-200"}`} />
-
-        <div>
-          <h3
-            className={`text-lg font-semibold ${
-              darkMode ? "text-zinc-100" : "text-slate-900"
-            }`}
-          >
-            Dataset
-          </h3>
-
-          <p
-            className={`mt-4 text-sm leading-7 ${
-              darkMode ? "text-zinc-300" : "text-slate-600"
-            }`}
-          >
-            The dataset used in this project contains customer demographic,
-            subscription, and service-related information. It serves as the
-            foundation for analyzing churn behavior and training predictive
-            models.
+          <p className={`mt-4 text-sm leading-7 ${darkMode ? "text-zinc-300" : "text-slate-600"}`}>
+            The dashboard functions as a decision-support and monitoring tool
+            that enables stakeholders to track churn trends, identify high-risk
+            customers, and understand the key drivers behind churn predictions.
           </p>
 
-          <div
-            className={`mt-4 text-sm ${
-              darkMode ? "text-zinc-300" : "text-slate-600"
-            }`}
-          >
-            <p>
-              <span
-                className={`font-medium ${
-                  darkMode ? "text-zinc-100" : "text-slate-900"
-                }`}
-              >
-                Dataset Name:
-              </span>{" "}
-              IBM Telco Customer Churn
-            </p>
-            <p>
-              <span
-                className={`font-medium ${
-                  darkMode ? "text-zinc-100" : "text-slate-900"
-                }`}
-              >
-                Source:
-              </span>{" "}
-              <a
-                href="https://www.kaggle.com/datasets/blastchar/telco-customer-churn/data"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                https://www.kaggle.com/datasets/blastchar/telco-customer-churn/data
-              </a>
-            </p>
-          </div>
-        </div>
-
-        <div className={`my-10 border-t ${darkMode ? "border-zinc-800" : "border-slate-200"}`} />
-
-        <div>
-          <h3
-            className={`text-lg font-semibold ${
-              darkMode ? "text-zinc-100" : "text-slate-900"
-            }`}
-          >
-            Purpose of the Dashboard
-          </h3>
-
-          <p
-            className={`mt-4 text-sm leading-7 ${
-              darkMode ? "text-zinc-300" : "text-slate-600"
-            }`}
-          >
-            The dashboard is designed as a monitoring and decision-support tool
-            that helps users quickly understand customer churn risk. It provides
-            clear insights into customer status, highlights at-risk
-            individuals, and reveals the key factors influencing predictions.
-          </p>
-
-          <ul
-            className={`mt-4 space-y-2 text-sm ${
-              darkMode ? "text-zinc-300" : "text-slate-600"
-            }`}
-          >
+          <ul className={`mt-4 space-y-2 text-sm ${darkMode ? "text-zinc-300" : "text-slate-600"}`}>
+            <li>• Monitor churn trends and customer distribution</li>
             <li>• Identify customers at risk of churn</li>
-            <li>• Monitor churn distribution</li>
-            <li>• Understand key influencing factors</li>
+            <li>• Analyze churn using key performance indicators (KPIs)</li>
+            <li>• Understand key drivers of churn</li>
             <li>• Support proactive retention strategies</li>
           </ul>
         </div>
 
+        {/* DIVIDER */}
         <div className={`my-10 border-t ${darkMode ? "border-zinc-800" : "border-slate-200"}`} />
 
+        {/* METHODOLOGY (NEW — matches README 🔥) */}
         <div>
-          <h3
-            className={`text-lg font-semibold ${
-              darkMode ? "text-zinc-100" : "text-slate-900"
-            }`}
-          >
+          <h3 className={`text-lg font-semibold ${darkMode ? "text-zinc-100" : "text-slate-900"}`}>
+            Methodology
+          </h3>
+
+          <ul className={`mt-4 space-y-2 text-sm ${darkMode ? "text-zinc-300" : "text-slate-600"}`}>
+            <li>• Performed exploratory data analysis (EDA) to identify churn patterns</li>
+            <li>• Prepared and transformed data for modeling</li>
+            <li>• Trained an XGBoost model for churn prediction</li>
+            <li>• Extracted key drivers using feature importance</li>
+            <li>• Generated synthetic data to simulate new customers</li>
+            <li>• Applied the model for real-time churn monitoring</li>
+          </ul>
+        </div>
+
+        {/* DIVIDER */}
+        <div className={`my-10 border-t ${darkMode ? "border-zinc-800" : "border-slate-200"}`} />
+
+        {/* KPIs */}
+        <div>
+          <h3 className={`text-lg font-semibold ${darkMode ? "text-zinc-100" : "text-slate-900"}`}>
+            KPIs
+          </h3>
+
+          <ul className={`mt-4 space-y-2 text-sm ${darkMode ? "text-zinc-300" : "text-slate-600"}`}>
+            <li>• Total Customers</li>
+            <li>• Customers at Risk</li>
+            <li>• Churn Rate (%)</li>
+            <li>• Top Risk Drivers</li>
+            <li>• High-Risk Customer List</li>
+          </ul>
+        </div>
+
+        {/* DIVIDER */}
+        <div className={`my-10 border-t ${darkMode ? "border-zinc-800" : "border-slate-200"}`} />
+
+        {/* KEY INSIGHTS */}
+        <div>
+          <h3 className={`text-lg font-semibold ${darkMode ? "text-zinc-100" : "text-slate-900"}`}>
             Key Insights
           </h3>
 
-          <div
-            className={`mt-4 space-y-3 text-sm ${
-              darkMode ? "text-zinc-300" : "text-slate-600"
-            }`}
-          >
+          <div className={`mt-4 space-y-3 text-sm ${darkMode ? "text-zinc-300" : "text-slate-600"}`}>
             <p>
-              <strong className={darkMode ? "text-zinc-100" : "text-slate-900"}>
-                Internet service type
-              </strong>
-              , particularly fiber optic, is the strongest indicator of churn.
+              Customers using <strong>fiber optic internet</strong> show higher churn risk.
             </p>
-
             <p>
-              <strong className={darkMode ? "text-zinc-100" : "text-slate-900"}>
-                Contract duration
-              </strong>{" "}
-              plays a major role, with month-to-month users showing higher churn
-              rates.
+              <strong>Month-to-month contracts</strong> are strongly associated with churn.
             </p>
-
             <p>
-              Customers with{" "}
-              <strong className={darkMode ? "text-zinc-100" : "text-slate-900"}>
-                longer tenure
-              </strong>{" "}
-              are more likely to remain loyal over time.
+              Customers with <strong>low tenure</strong> are more likely to leave.
             </p>
-
             <p>
-              Certain{" "}
-              <strong className={darkMode ? "text-zinc-100" : "text-slate-900"}>
-                payment methods
-              </strong>
-              , such as electronic check, are associated with higher churn risk.
+              <strong>Electronic check payments</strong> correlate with higher churn.
             </p>
-
             <p>
-              Additional services improve engagement and can reduce churn
-              likelihood.
+              Lack of <strong>additional services</strong> reduces retention.
             </p>
           </div>
 
-          <p
-            className={`mt-5 text-sm ${
-              darkMode ? "text-zinc-300" : "text-slate-600"
-            }`}
-          >
-            Overall, churn is largely influenced by service type, contract
-            structure, and customer engagement, providing valuable direction
-            for targeted retention strategies.
+          <p className={`mt-5 text-sm ${darkMode ? "text-zinc-300" : "text-slate-600"}`}>
+            Main drivers of churn include contract type, service type, and customer engagement.
           </p>
+        </div>
+
+        {/* DIVIDER */}
+        <div className={`my-10 border-t ${darkMode ? "border-zinc-800" : "border-slate-200"}`} />
+
+        {/* TECH STACK */}
+        <div>
+          <h3 className={`text-lg font-semibold ${darkMode ? "text-zinc-100" : "text-slate-900"}`}>
+            Tech Stack
+          </h3>
+
+          <ul className={`mt-4 space-y-2 text-sm ${darkMode ? "text-zinc-300" : "text-slate-600"}`}>
+            <li>• Python</li>
+            <li>• XGBoost</li>
+            <li>• React + TypeScript</li>
+            <li>• Vercel</li>
+          </ul>
         </div>
       </div>
     </div>
