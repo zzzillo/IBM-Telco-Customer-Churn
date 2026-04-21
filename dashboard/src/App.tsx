@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState, lazy, Suspense } from "react";
+import DashboardFilters from "./components/DashboardFilters";
 import Sidebar from "./components/SideBar";
 import TopBar from "./components/TopBar";
-import type { DatasetRow, FeatureItem, Page, RiskCustomer } from "./types";
+import { normalizeRows } from "./lib/churnAnalytics";
+import type { DatasetRow, FeatureItem, Page, RiskBand } from "./types";
 
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const DatasetPage = lazy(() => import("./pages/DatasetPage"));
@@ -9,10 +11,14 @@ const AboutPage = lazy(() => import("./pages/AboutPage"));
 
 export default function App() {
   const [activePage, setActivePage] = useState<Page>("dashboard");
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [datasetRows, setDatasetRows] = useState<DatasetRow[]>([]);
   const [importantFeatures, setImportantFeatures] = useState<FeatureItem[]>([]);
+  const [dashboardRiskFilter, setDashboardRiskFilter] = useState<RiskBand | "All">(
+    "All"
+  );
+  const [dashboardContractFilter, setDashboardContractFilter] = useState("All");
+  const [dashboardInternetFilter, setDashboardInternetFilter] = useState("All");
 
   useEffect(() => {
     fetch("/data.json")
@@ -33,75 +39,57 @@ export default function App() {
       });
   }, []);
 
-  const normalizedRows = useMemo(() => {
-    return datasetRows.map((row) => {
-      const churn = String(row.Churn).toLowerCase();
-      const isAtRisk =
-        churn === "yes" ||
-        churn === "at risk" ||
-        churn === "high risk";
+  const normalizedRows = useMemo(() => normalizeRows(datasetRows), [datasetRows]);
+  const dashboardContracts = useMemo(
+    () => ["All", ...new Set(normalizedRows.map((row) => row.Contract))],
+    [normalizedRows]
+  );
+  const dashboardInternetServices = useMemo(
+    () => ["All", ...new Set(normalizedRows.map((row) => row.InternetService))],
+    [normalizedRows]
+  );
 
-      return {
-        ...row,
-        Churn: isAtRisk ? "At Risk" : "Not at Risk",
-      };
-    });
-  }, [datasetRows]);
-
-  const totalCustomers = normalizedRows.length;
-
-  const atRiskRows = useMemo(() => {
-    return normalizedRows.filter((r) => r.Churn === "At Risk");
-  }, [normalizedRows]);
-
-  const atRiskCount = atRiskRows.length;
-
-  const atRiskCustomers: RiskCustomer[] = useMemo(() => {
-    return atRiskRows.slice(0, 50).map((row) => ({
-      customerId: row.customerID,
-      churnProbability: `${Math.round(Number(row.ChurnProbability) * 100)}%`,
-      churnStatus: row.Churn,
-    }));
-  }, [atRiskRows]);
-
-  const churnDistribution = useMemo(() => {
-    if (totalCustomers === 0) {
-      return [
-        { name: "Customers at Risk", value: 0 },
-        { name: "Customers Not at Risk", value: 0 },
-      ];
-    }
-
-    return [
-      {
-        name: "Customers at Risk",
-        value: Math.round((atRiskCount / totalCustomers) * 100),
-      },
-      {
-        name: "Customers Not at Risk",
-        value: Math.round(
-          ((totalCustomers - atRiskCount) / totalCustomers) * 100
-        ),
-      },
-    ];
-  }, [atRiskCount, totalCustomers]);
+  const resetDashboardFilters = () => {
+    setDashboardRiskFilter("All");
+    setDashboardContractFilter("All");
+    setDashboardInternetFilter("All");
+  };
 
   return (
-    <main className={darkMode ? "min-h-screen bg-black" : "min-h-screen bg-slate-100"}>
+    <main
+      className={
+        darkMode
+          ? "theme-dark min-h-screen bg-black"
+          : "theme-light min-h-screen bg-slate-100"
+      }
+    >
       <div className="flex min-h-screen flex-col lg:flex-row">
         <Sidebar
           activePage={activePage}
           onChangePage={setActivePage}
-          mobileOpen={mobileOpen}
-          onCloseMobile={() => setMobileOpen(false)}
           darkMode={darkMode}
         />
 
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 pb-20 lg:pb-0">
           <TopBar
-            onToggleMobile={() => setMobileOpen((prev) => !prev)}
             darkMode={darkMode}
             onToggleDarkMode={() => setDarkMode((prev) => !prev)}
+            actions={
+              activePage === "dashboard" ? (
+                <DashboardFilters
+                  riskFilter={dashboardRiskFilter}
+                  contractFilter={dashboardContractFilter}
+                  internetFilter={dashboardInternetFilter}
+                  contracts={dashboardContracts}
+                  internetServices={dashboardInternetServices}
+                  darkMode={darkMode}
+                  onRiskFilterChange={setDashboardRiskFilter}
+                  onContractFilterChange={setDashboardContractFilter}
+                  onInternetFilterChange={setDashboardInternetFilter}
+                  onReset={resetDashboardFilters}
+                />
+              ) : null
+            }
           />
 
           <Suspense
@@ -119,12 +107,12 @@ export default function App() {
           >
             {activePage === "dashboard" && (
               <DashboardPage
-                totalCustomers={totalCustomers}
-                atRiskCount={atRiskCount}
-                atRiskCustomers={atRiskCustomers}
+                rows={normalizedRows}
                 importantFeatures={importantFeatures}
-                churnDistribution={churnDistribution}
                 darkMode={darkMode}
+                riskFilter={dashboardRiskFilter}
+                contractFilter={dashboardContractFilter}
+                internetFilter={dashboardInternetFilter}
               />
             )}
 

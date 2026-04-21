@@ -15,7 +15,7 @@ export type RiskCustomer = {
 
 export type FeatureItem = {
   feature: string;
-  importance: string;
+  importance: number | string;
   impact: string;
 };
 
@@ -60,4 +60,39 @@ export type DatasetRow = {
   TotalCharges: number;
   ChurnProbability: number;
   Churn: string;
+};
+
+export type RiskBand = "Critical" | "High" | "Watch" | "Low";
+
+export type CustomerRecord = DatasetRow & {
+  churnStatus: "At Risk" | "Not at Risk";
+  churnProbabilityPct: number;
+  riskBand: RiskBand;
+  tenureBucket: string;
+  monthlyRevenueExposure: number;
+  seniorLabel: string;
+};
+
+export type SegmentMetric = {
+  name: string;
+  count: number;
+  atRisk: number;
+  avgProbability: number;
+  exposure: number;
+};
+
+export type RiskBandMetric = {
+  name: RiskBand;
+  count: number;
+  exposure: number;
+};
+
+export type DashboardSummary = {
+  totalCustomers: number;
+  atRiskCount: number;
+  watchlistCount: number;
+  avgProbability: number;
+  atRiskRate: number;
+  monthlyExposure: number;
+  highestRiskSegment: SegmentMetric | null;
 };

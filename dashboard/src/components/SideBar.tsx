@@ -1,19 +1,15 @@
 import type { Page } from "../types";
-import { CloseIcon, DashboardIcon, InfoIcon, TableIcon } from "./icons";
+import { DashboardIcon, InfoIcon, TableIcon } from "./icons";
 
 type SidebarProps = {
   activePage: Page;
   onChangePage: (page: Page) => void;
-  mobileOpen: boolean;
-  onCloseMobile: () => void;
   darkMode: boolean;
 };
 
 export default function Sidebar({
   activePage,
   onChangePage,
-  mobileOpen,
-  onCloseMobile,
   darkMode,
 }: SidebarProps) {
   const navItems = [
@@ -24,57 +20,20 @@ export default function Sidebar({
 
   return (
     <>
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
-          onClick={onCloseMobile}
-        />
-      )}
-
       <aside
-        className={`fixed left-0 top-0 z-50 h-full w-65 border-r transition-transform duration-300 lg:hidden ${
-          mobileOpen ? "translate-x-0" : "-translate-x-full"
-        } ${
+        className={`fixed inset-x-0 bottom-0 z-40 border-t px-3 py-2 lg:hidden ${
           darkMode ? "border-zinc-800 bg-black" : "border-slate-200 bg-white"
         }`}
       >
-        <div
-          className={`flex items-center justify-between border-b px-4 py-4 ${
-            darkMode ? "border-zinc-800" : "border-slate-200"
-          }`}
-        >
-          <span
-            className={`text-base font-semibold ${
-              darkMode ? "text-zinc-100" : "text-slate-900"
-            }`}
-          >
-            Navigation
-          </span>
-          <button
-            onClick={onCloseMobile}
-            className={`rounded-xl p-2 transition ${
-              darkMode
-                ? "bg-zinc-900 text-zinc-100 hover:bg-zinc-800"
-                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-            }`}
-            aria-label="Close menu"
-          >
-            <CloseIcon />
-          </button>
-        </div>
-
-        <div className="space-y-3 p-4">
+        <nav className="grid grid-cols-3 gap-2">
           {navItems.map((item) => {
             const active = activePage === item.key;
 
             return (
               <button
                 key={item.key}
-                onClick={() => {
-                  onChangePage(item.key);
-                  onCloseMobile();
-                }}
-                className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition ${
+                onClick={() => onChangePage(item.key)}
+                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-lg px-2 py-2 transition ${
                   active
                     ? "bg-blue-600 text-white shadow-md"
                     : darkMode
@@ -83,11 +42,11 @@ export default function Sidebar({
                 }`}
               >
                 <span className="shrink-0">{item.icon}</span>
-                <span className="text-sm font-semibold">{item.label}</span>
+                <span className="text-[11px] font-semibold leading-none">{item.label}</span>
               </button>
             );
           })}
-        </div>
+        </nav>
       </aside>
 
       <aside className="hidden lg:block">

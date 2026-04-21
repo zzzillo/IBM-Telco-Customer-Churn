@@ -10,6 +10,39 @@ import SectionTitle from "./SectionTitle";
 
 const PIE_COLORS = ["#ef4444", "#22c55e"];
 
+function CustomTooltip({
+  active,
+  payload,
+  darkMode,
+}: {
+  active?: boolean;
+  payload?: Array<{
+    payload: {
+      name: string;
+      value: number;
+      percentage: number;
+    };
+  }>;
+  darkMode: boolean;
+}) {
+  if (!active || !payload || !payload.length) return null;
+
+  const item = payload[0].payload;
+
+  return (
+    <div
+      className={`rounded-xl border px-3 py-2 text-sm shadow-md ${
+        darkMode
+          ? "border-zinc-800 bg-zinc-900 text-zinc-100"
+          : "border-slate-200 bg-white text-slate-900"
+      }`}
+    >
+      <p className="font-medium">{item.name}</p>
+      <p>{item.percentage.toFixed(1)}%</p>
+    </div>
+  );
+}
+
 export default function ChurnPieCard({
   title,
   data,
@@ -21,37 +54,6 @@ export default function ChurnPieCard({
     ...item,
     percentage: total > 0 ? (item.value / total) * 100 : 0,
   }));
-
-  const CustomTooltip = ({
-    active,
-    payload,
-  }: {
-    active?: boolean;
-    payload?: Array<{
-      payload: {
-        name: string;
-        value: number;
-        percentage: number;
-      };
-    }>;
-  }) => {
-    if (!active || !payload || !payload.length) return null;
-
-    const item = payload[0].payload;
-
-    return (
-      <div
-        className={`rounded-xl border px-3 py-2 text-sm shadow-md ${
-          darkMode
-            ? "border-zinc-800 bg-zinc-900 text-zinc-100"
-            : "border-slate-200 bg-white text-slate-900"
-        }`}
-      >
-        <p className="font-medium">{item.name}</p>
-        <p>{item.percentage.toFixed(1)}%</p>
-      </div>
-    );
-  };
 
   return (
     <section
@@ -96,7 +98,10 @@ export default function ChurnPieCard({
                   />
                 ))}
               </Pie>
-              <Tooltip content={<CustomTooltip />} cursor={false} />
+              <Tooltip
+                content={<CustomTooltip darkMode={darkMode} />}
+                cursor={false}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>

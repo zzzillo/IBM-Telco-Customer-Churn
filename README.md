@@ -8,6 +8,14 @@
 
 🔗 https://ibm-telco-customer-churn.vercel.app/
 
+The dashboard has been refactored into a compact retention workspace with:
+
+- KPI cards for monitored customers, predicted churn, watchlist size, average risk, and probability-weighted monthly revenue exposure
+- Interactive filters for search, risk band, contract type, and internet service
+- Segment views for contract risk, internet-service risk, tenure sensitivity, and risk-band distribution
+- Feature-importance visualization connected to the model output
+- Searchable customer-level explorer and retention-priority list
+
 ---
 
 ## About
@@ -57,6 +65,8 @@ Detailed exploratory data analysis and modeling workflow:
 - **Total Customers** – Number of monitored customers  
 - **Customers at Risk** – Customers predicted as likely to churn  
 - **Churn Rate (%)** – (At Risk Customers / Total Customers) × 100  
+- **Watchlist Customers** – Customers with churn probability of 25% or higher  
+- **Monthly Exposure** – Probability-weighted recurring revenue at risk  
 - **Top Risk Drivers** – Most influential features affecting churn  
 - **High-Risk Customer List** – Customers requiring immediate attention  
 
