@@ -1,110 +1,135 @@
-# IBM Customer Churn Monitoring Dashboard
+# IBM Telco Customer Churn Dashboard
 
----
+A churn monitoring project that turns IBM Telco customer data, model predictions,
+and feature importance into an interactive retention dashboard.
 
-## Dashboard
+![Customer churn dashboard preview](dashboard.png)
 
-![Dashboard Preview](dashboard.png)
+Live dashboard: https://ibm-telco-customer-churn.vercel.app/
 
-🔗 https://ibm-telco-customer-churn.vercel.app/
+## Overview
 
-The dashboard has been refactored into a compact retention workspace with:
+This project demonstrates an end-to-end analytics workflow for customer churn:
+data preparation, exploratory analysis, machine learning prediction, monitoring
+simulation, and a React dashboard for retention decision-making.
 
-- KPI cards for monitored customers, predicted churn, watchlist size, average risk, and probability-weighted monthly revenue exposure
-- Interactive filters for search, risk band, contract type, and internet service
-- Segment views for contract risk, internet-service risk, tenure sensitivity, and risk-band distribution
-- Feature-importance visualization connected to the model output
-- Searchable customer-level explorer and retention-priority list
+The dashboard is designed for stakeholders who need to:
 
----
+- Monitor customers by churn risk
+- Compare risk across contract, internet service, and tenure segments
+- Prioritize customers for retention outreach
+- Understand the model features that influence churn predictions
+- Inspect customer-level records in a searchable dataset explorer
 
-## About
+## Dashboard Features
 
-This project demonstrates an **end-to-end data analytics workflow**, from data preparation and modeling to deployment in a monitoring system.
+- Responsive dashboard with desktop sidebar and mobile bottom navigation
+- Top-level filter menu for `Risk`, `Contract`, and `Internet`
+- KPI cards for monitored customers, predicted churn, watchlist size, average
+  churn probability, and probability-weighted monthly revenue exposure
+- Segment charts for contract risk, risk bands, internet service, and tenure
+- Feature importance chart connected to the trained model output
+- Tap/click chart feedback for bar values on mobile and desktop
+- Scrollable retention priority table for the highest-risk customers
+- Dataset explorer with customer-level filtering and sorting
+- Dark and light mode support with theme-aware scrollbars
 
-It simulates a **real-world business scenario** where a trained churn prediction model is continuously applied to new customer data to identify churn risk.
+## Analysis Workflow
 
-The dashboard serves as a **decision-support tool** that enables stakeholders to:
+### 1. Data Preparation
 
-- Monitor churn trends  
-- Identify high-risk customers  
-- Understand key drivers of churn  
-- Take proactive retention actions  
+- Loaded the IBM Telco Customer Churn dataset
+- Cleaned and transformed customer fields
+- Prepared encoded features for model training
+- Generated monitoring-ready synthetic customer records
 
----
+### 2. Modeling
 
-## Analysis
+- Trained an XGBoost classification model
+- Produced churn probabilities for customer-level monitoring
+- Extracted feature importance for explainability
 
-Detailed exploratory data analysis and modeling workflow:
+### 3. Monitoring Dashboard
 
-📊 [View Full Analysis Notebook](./analysis/IBMCustomerChurn.ipynb)
+- Normalized prediction output into typed dashboard records
+- Derived risk bands, tenure buckets, customer status, and revenue exposure
+- Built reusable analytics helpers for summaries and segment aggregation
+- Rendered an interactive React dashboard from JSON monitoring outputs
 
----
+## Key Metrics
 
-## Methodology
-
-### Data Preparation
-- Conducted **exploratory data analysis (EDA)** to identify churn patterns  
-- Cleaned and transformed data (encoding, feature engineering)  
-
-### Modeling
-- Trained an **XGBoost classification model** for churn prediction  
-- Evaluated model outputs and extracted **feature importance**  
-
-### Monitoring Simulation
-- Generated a **synthetic dataset (LLM-based)** to simulate incoming customers  
-- Applied the trained model to predict churn on new data  
-
-### Dashboard Development
-- Built and deployed an **interactive dashboard** for real-time churn monitoring  
-
----
-
-## KPIs
-
-- **Total Customers** – Number of monitored customers  
-- **Customers at Risk** – Customers predicted as likely to churn  
-- **Churn Rate (%)** – (At Risk Customers / Total Customers) × 100  
-- **Watchlist Customers** – Customers with churn probability of 25% or higher  
-- **Monthly Exposure** – Probability-weighted recurring revenue at risk  
-- **Top Risk Drivers** – Most influential features affecting churn  
-- **High-Risk Customer List** – Customers requiring immediate attention  
-
----
+- **Filtered Customers**: Customers currently included after dashboard filters
+- **Predicted at Risk**: Customers classified as likely to churn
+- **Watchlist**: Customers with churn probability of 25% or higher
+- **Average Probability**: Mean churn probability across filtered customers
+- **Monthly Exposure**: Probability-weighted monthly recurring revenue at risk
 
 ## Key Insights
 
-- Customers using **fiber optic internet** show higher churn risk  
-- **Month-to-month contracts** are strongly associated with churn  
-- Customers with **low tenure** are more likely to leave  
-- **Electronic check payments** correlate with higher churn  
-- Lack of **additional services** reduces retention  
+- Fiber optic customers show elevated churn risk
+- Month-to-month contracts are the most fragile contract segment
+- Lower-tenure customers require earlier retention attention
+- Contract type, internet service, and customer engagement are major drivers
+- Revenue exposure helps prioritize outreach beyond raw churn counts
 
-**Main drivers:** contract type, service type, and customer engagement  
+## Repository Structure
 
----
+```text
+analysis/
+  IBMCustomerChurn.ipynb
+data/
+  WA_Fn-UseC_-Telco-Customer-Churn.csv
+  synthetic_churn_1000.csv
+  customer_churn_full_results.csv
+dashboard/
+  public/data.json
+  public/features.json
+  src/
+README.md
+dashboard.png
+requirements.txt
+```
 
 ## Tech Stack
 
-- **Python** – Data cleaning, preprocessing, and analysis  
-- **XGBoost** – Machine learning model for churn prediction  
-- **React + TypeScript** – Interactive dashboard development  
-- **Vercel** – Deployment and hosting  
+- Python for data preparation, EDA, and modeling
+- XGBoost for churn prediction
+- React, TypeScript, and Vite for the dashboard
+- Recharts for visualizations
+- Tailwind CSS for responsive UI styling
+- Vercel for deployment
 
----
+## Local Development
+
+```bash
+cd dashboard
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite, usually:
+
+```text
+http://127.0.0.1:5173/
+```
+
+## Quality Checks
+
+```bash
+cd dashboard
+npm run lint
+npm run build
+```
 
 ## Dataset
 
-- IBM Telco Customer Churn  
-  https://www.kaggle.com/datasets/blastchar/telco-customer-churn  
+IBM Telco Customer Churn dataset:
+https://www.kaggle.com/datasets/blastchar/telco-customer-churn
 
----
+## Outputs
 
-## Output
-
-- Trained churn prediction model  
-- Synthetic monitoring dataset  
-- Deployed churn monitoring dashboard  
-- Actionable insights for customer retention strategies  
-
----
+- Exploratory analysis notebook
+- Trained churn prediction workflow
+- Synthetic monitoring dataset
+- Customer-level churn prediction results
+- Interactive retention monitoring dashboard
